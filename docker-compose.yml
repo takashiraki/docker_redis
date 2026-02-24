@@ -10,11 +10,30 @@ services:
     networks:
       - my_infra_network
 
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: redis_insight
+    ports:
+      - 5540:5540
+    volumes:
+      - redis_insight_data:/db
+    environment:
+      TZ: Asia/Tokyo
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      VIRTUAL_PORT: ${VIRTUAL_PORT}
+    networks:
+      - my_infra_network
+      - my_proxy_network
+
 volumes:
   redis_data:
+  redis_insight_data:
 
 
 networks:
   my_infra_network:
     external: true
     name: my_infra_network
+  my_proxy_network:
+    external: true
+    name: my_proxy_network
